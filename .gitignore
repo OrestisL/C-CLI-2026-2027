@@ -1,3 +1,6 @@
 # ignore project build files
 bin/
 obj/
+
+# ignore student work
+StudentWork/
