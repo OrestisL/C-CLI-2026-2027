@@ -1,16 +1,20 @@
 ﻿using GeometryLib;
 using Files;
-using System.Collections.Generic;
+using ArgumentParser;
 
 public class Program
 {
+    private static string _fileExtension = ".txt";
+    private static string _fileReadPath = "";
     private static List<Point2d> points2d = [];
     public static void Main(string[] args)
     {      
-        string fileName = "line.txt";
+        SetArgsList();
+        Argument.ProcessArguments(args);
+
+        string fileName = $"line{_fileExtension}";
         Line2d line = new Line2d(new Point2d(0, 0), new Point2d(3, 4));
-        string saveDir = Path.Combine(Directory.GetCurrentDirectory(), "Data");
-        SaveLoad.Save(saveDir, fileName, line);
+        SaveLoad.Save(_fileReadPath, fileName, line);
 
         if(SaveLoad.TryLoad(FileOperations.DataDir, fileName, out Line2d? loadedLine))
         {
@@ -32,7 +36,7 @@ public class Program
         polyline.Points.Add(new Point2d(48, 64));
         Console.WriteLine($"Updated polyline length: {polyline.Length()}");
 
-        SaveLoad.Save(FileOperations.DataDir, "polyline.json", polyline);
+        SaveLoad.Save(FileOperations.DataDir, $"polyline{_fileExtension}", polyline);
     }
 
     private static void Old(string[] args)
@@ -132,6 +136,33 @@ public class Program
             Console.WriteLine("Invalid age input. Defaulting to 20.");
             return 20;
         }
+    }
+    private static void SetArgsList()
+    {
+        Argument.ArgsList.Add(new Argument("", "help",
+            "-h", "Shows description for all arguments.", ShowHelp, false));
+        Argument.ArgsList.Add(new Argument("string", "file-extension",
+            "-fe", "Sets the file extension.", SetFileExtension, true));
+        Argument.ArgsList.Add(new Argument("string", "read-file",
+            "-in", "Sets the file read path.", SetFileReadPath, true));
+    }
+    private static void ShowHelp(string _)
+    {
+        foreach (var argument in Argument.ArgsList)
+        {
+            Console.WriteLine(argument.GetDetails());
+        }
+    }
+    private static void SetFileExtension(string s)
+    {
+        if (!s.StartsWith("."))
+            s = $".{s}";
+        
+        _fileExtension = s;
+    }
+    private static void SetFileReadPath(string s)
+    {
+        _fileReadPath = s;
     }
 }
 
