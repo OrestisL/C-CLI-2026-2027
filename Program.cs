@@ -37,7 +37,7 @@ public class Program
 
     private static void Old(string[] args)
     {
-            foreach (var arg in args)
+        foreach (var arg in args)
         {
             Console.WriteLine($"Argument: {arg}");
             if(double.TryParse(arg, System.Globalization.NumberStyles.Float, new System.Globalization.CultureInfo("en-US"), out double value))
