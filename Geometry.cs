@@ -18,17 +18,11 @@ public static class Constants
     }
 }
 
-public class Point2d
+public class Point2d(double x, double y)
 {
     public static Point2d Origin { get { return new Point2d(0, 0); } }
-    public double X { get; private set; }
-    public double Y { get; private set; }
-
-    public Point2d(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
+    public double X { get; private set; } = x;
+    public double Y { get; private set; } = y;
 
     public override string ToString()
     {
@@ -74,21 +68,16 @@ public class Point2d
     }
 }
 
-public class Vector2d
+public class Vector2d(double x, double y)
 {
     public static Vector2d Zero { get { return new Vector2d(0, 0); } }
     public static Vector2d One { get { return new Vector2d(1, 1); } }
     public static Vector2d XAxis { get { return new Vector2d(1, 0); } }
     public static Vector2d YAxis { get { return new Vector2d(0, 1); } }
 
-    public double X { get; private set; }
-    public double Y { get; private set; }
+    public double X { get; private set; } = x;
+    public double Y { get; private set; } = y;
     public double Length { get { return Math.Sqrt(X * X + Y * Y); } }
-    public Vector2d(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
 
     public Vector2d Normalize()
     {
@@ -196,18 +185,12 @@ public class Vector2d
     }
 }
 
-public class Line2d
+public class Line2d(Point2d startPoint, Point2d endPoint)
 {
     [JsonRequired]
-    public Point2d StartPoint { get; private set; }
+    public Point2d StartPoint { get; private set; } = startPoint;
     [JsonRequired]
-    public Point2d EndPoint { get; private set; }
-
-    public Line2d(Point2d startPoint, Point2d endPoint)
-    {
-        StartPoint = startPoint;
-        EndPoint = endPoint;
-    }
+    public Point2d EndPoint { get; private set; } = endPoint;
 
     public double Length()
     {
@@ -221,17 +204,12 @@ public class Line2d
     }
 }
 
-public class Polyline2d
+/// <summary>
+/// Default constructor does not copy input points
+/// </summary>
+public class Polyline2d(List<Point2d> points)
 {
-    public List<Point2d> Points { get; set; }
-
-    /// <summary>
-    /// Default constructor does not copy input points
-    /// </summary>
-    public Polyline2d(List<Point2d> points)
-    {
-        Points = points;
-    }
+    public List<Point2d> Points { get; set; } = points;
 
     /// <summary>
     /// Implicit conversion from List<Point2d> copies the input list of points
