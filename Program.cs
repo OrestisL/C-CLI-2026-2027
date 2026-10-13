@@ -1,7 +1,7 @@
 ﻿using GeometryLib;
 using Files;
 using ArgumentParser;
-
+using StudentWork;
 public class Program
 {
     private static string _fileExtension = ".txt";
@@ -145,6 +145,8 @@ public class Program
             "-fe", "Sets the file extension.", SetFileExtension, true));
         Argument.ArgsList.Add(new Argument("string", "read-file",
             "-in", "Sets the file read path.", SetFileReadPath, true));
+        Argument.ArgsList.Add(new Argument("string", "add-task",
+            "-add", "Adds a task to the To Do List (use double comma separation (eg: \"test,,test description\") for name (first) and description (second))", AddTask, true));
     }
     private static void ShowHelp(string _)
     {
@@ -163,6 +165,19 @@ public class Program
     private static void SetFileReadPath(string s)
     {
         _fileReadPath = s;
+    }
+    private static void AddTask(string s)
+    {
+        // load to do list if exists
+        // create new task
+        string[] parts = s.Split(",,");
+        if (parts.Length != 2)
+        {
+            Console.WriteLine("Invalid input for task creation");
+            return;
+        }
+        ToDoTask task = new ToDoTask(parts[0],parts[1]);
+        // add to list
     }
 }
 
